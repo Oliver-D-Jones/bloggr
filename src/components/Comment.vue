@@ -13,6 +13,7 @@
       <p class="pt-0 m-0">Email: {{com.creatorEmail}}</p>
       <small>
         <img v-if="com.creator!=null" :src="com.creator.picture" class="img-fluid border mt-2" />
+        <img v-else-if="com.imgUrl !=null" :src="com.imgUrl" class="img-fluid border mt-2" />
       </small>
 
       <div class="container">
@@ -35,7 +36,11 @@
               </div>
 
               <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-success" @click="updateComment(com.body)">UPDATE</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="updateComment(com.body)"
+                >UPDATE</button>
               </div>
             </div>
           </div>
@@ -63,9 +68,8 @@ export default {
     deleteComment() {
       if (this.$auth.isAuthenticated) {
         let id = this.com.id;
-        this.$store.dispatch("deleteComment",id);
-        $("#modal"+this.com.id).modal("hide")
-
+        this.$store.dispatch("deleteComment", id);
+        $("#modal" + this.com.id).modal("hide");
       }
     },
     updateComment(body) {
@@ -74,7 +78,7 @@ export default {
         update.body = body;
         let _id = update.id;
         this.$store.dispatch("updateComment", { data: update, _id: update.id });
-        $("#modal"+this.com.id).modal("hide")
+        $("#modal" + this.com.id).modal("hide");
       }
     },
   },

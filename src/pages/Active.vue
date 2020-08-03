@@ -4,13 +4,16 @@
       <div class="col-10 my-1 card text-center border border-rounded shadow-lg">
         <div class="card-body">
           <h5 class="card-title text-dark">{{activeBlog.blog.title}}</h5>
+          <small>
+            <img class="avatar" :src="activeBlog.blog.creator.picture" alt="">
+          </small>
           <h6
             class="card-subtitle mb-2 text-muted"
             v-if="activeBlog.blog.creator!=null"
           >By: {{activeBlog.blog.creator.name}}</h6>
-          <h6 class="card-subtitle mb-2 text-muted">Email: {{activeBlog.blog.creatorEmail}}</h6>
-          <p v-if="activeBlog.imgUrl">
-            <img :src="activeBlog.imgUrl" alt />
+          <h6 class="card-subtitle mb-2 text-dark">Email: {{activeBlog.blog.creatorEmail}}</h6>
+          <p v-if="activeBlog.blog.imgUrl">
+            <img :src="activeBlog.blog.imgUrl" alt />
           </p>
           <p class="card-text bg-info text-light border-rounded">{{activeBlog.blog.body}}</p>
         </div>
@@ -103,6 +106,9 @@ export default {
 }
 .card {
   cursor: pointer;
+}
+img.avatar{
+  max-height:100px;
 }
 p.card-text {
   min-height: 4rem;

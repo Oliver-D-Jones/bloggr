@@ -32,9 +32,7 @@ export default new Vuex.Store({
 
     },
     postedComment(state,comment){
-      let blog = state.activeBlog;
-      blog.comments.unshift(comment)
-      state.activeBlog = blog
+      state.activeBlog.comments.unshift(comment)
     },
     updatedComment(state,comment){
       let index = state.activeBlog.comments.findIndex(c=>c.id==comment.id)
@@ -99,6 +97,8 @@ export default new Vuex.Store({
     async postComment({ commit, dispatch }, comment) {
       try {
         let res = await api.post("comments/", comment);
+        console.log(res.data)
+        res.data.imgUrl=comment.imgUrl;
         commit("postedComment",res.data);
         dispatch("saveStateToLocal")
 
