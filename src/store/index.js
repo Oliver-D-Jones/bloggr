@@ -14,7 +14,7 @@ export default new Vuex.Store({
     activeBlog: {},
   },
   mutations: {
-    setProfile(state, profile) {
+    setProfile(state, profile,dispatch) {
       state.profile = profile;
     },
     setProfileBlogs(state, profileBlogs) {
@@ -29,11 +29,23 @@ export default new Vuex.Store({
     deleteBlog(state, id) {
       let index = state.profileBlogs.findIndex(b => b.id == id);
       state.profileBlogs.splice(index, 1);
+
     },
     postedComment(state,comment){
       let blog = state.activeBlog;
       blog.comments.unshift(comment)
       state.activeBlog = blog
+    },
+    updatedComment(state,comment){
+      let index = state.activeBlog.comments.findIndex(c=>c.id==comment.id)
+      state.activeBlog.comments[index].body = comment.body;
+    },
+    deletedComment(state,id){
+      let blog = state.activeBlog;
+      let index = blog.comments.findIndex(c=>c.id==id);
+      console.log(blog,index);
+      blog.comments.splice(index,1);
+      state.activeBlog = blog;
     }
   },
   actions: {
@@ -88,22 +100,28 @@ export default new Vuex.Store({
       try {
         let res = await api.post("comments/", comment);
         commit("postedComment",res.data);
+        dispatch("saveStateToLocal")
+
       } catch (error) {
         console.error(error);
       }
     },
-    async updateComment({ commit }, comment) {
+    async updateComment({ commit,dispatch }, comment) {
       try {
         let res = await api.put("comments/" + comment._id, comment.data);
-        // commit("postedComment",comment);
+        commit("updatedComment",res.data);
+        dispatch("saveStateToLocal")
+
       } catch (error) {
         console.error(error);
       }
     },
-    async deleteComment({ state, dispatch }, id) {
+    async deleteComment({ dispatch, commit }, id) {
       try {
         await api.delete("comments/" + id);
-        // dispatch("getActiveBlog",state.activeBlog.blog.id)
+        commit("deletedComment",id)
+        dispatch("saveStateToLocal")
+
       } catch (error) {
         console.error(error);
       }
@@ -130,13 +148,14 @@ export default new Vuex.Store({
     getStateFromLocal({ commit }) {
       let data = JSON.parse(window.localStorage.getItem("Bloggr"));
       if (data) {
-        // data.activeBlog = data.activeBlog.map(todo => new ToDo(todo));
         commit("setActiveBlog", data.activeBlog)
+        console.log("in get local")
       }
     },
-    saveStateToLocal() {
-      let save = { activeBlog: this.state.activeBlog }
+    saveStateToLocal({state}) {
+      let save = { activeBlog: state.activeBlog }
       window.localStorage.setItem("Bloggr", JSON.stringify(save))
+      console.log("in save local",save)
     },
     //==============================================
   },

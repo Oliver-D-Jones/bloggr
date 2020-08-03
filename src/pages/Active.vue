@@ -3,7 +3,7 @@
     <div class="row justify-content-center bg-gradient-light">
       <div class="col-10 my-1 card text-center border border-rounded shadow-lg">
         <div class="card-body">
-          <h5 class="card-title text-dark">{{activeBlog.blog.id}}</h5>
+          <h5 class="card-title text-dark">{{activeBlog.blog.title}}</h5>
           <h6
             class="card-subtitle mb-2 text-muted"
             v-if="activeBlog.blog.creator!=null"
@@ -67,8 +67,10 @@ export default {
   computed: {
     activeBlog() {
       if (this.current_blog) {
+        console.log("in if");
         return this.$store.state.activeBlog;
       } else {
+        console.log("in else");
        this.$store.dispatch("getStateFromLocal");
        return this.$store.state.activeBlog;
       }

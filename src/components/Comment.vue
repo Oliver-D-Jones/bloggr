@@ -35,7 +35,7 @@
               </div>
 
               <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-success" @click="updateComment(com.body)">POST</button>
+                <button type="button" class="btn btn-success" @click="updateComment(com.body)">UPDATE</button>
               </div>
             </div>
           </div>
@@ -63,7 +63,9 @@ export default {
     deleteComment() {
       if (this.$auth.isAuthenticated) {
         let id = this.com.id;
-        this.$store.dispatch("deleteComment",id)
+        this.$store.dispatch("deleteComment",id);
+        $("#modal"+this.com.id).modal("hide")
+
       }
     },
     updateComment(body) {
@@ -72,6 +74,7 @@ export default {
         update.body = body;
         let _id = update.id;
         this.$store.dispatch("updateComment", { data: update, _id: update.id });
+        $("#modal"+this.com.id).modal("hide")
       }
     },
   },
