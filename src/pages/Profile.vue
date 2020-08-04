@@ -24,7 +24,11 @@ import profileblog from "../components/ProfileBlog";
 import blogmodal from "../components/PostBlogModel";
 export default {
   name: "Profile",
-  methods: {},
+  methods: {
+    updateProfile(){
+      
+    }
+  },
   computed: {
     profile() {
       if (this.$auth.isAuthenticated) {

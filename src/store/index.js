@@ -144,6 +144,16 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
+    async updateProfile({ commit,dispatch }, profile) {
+      try {
+        let res = await api.put("profile/" + profile._id, profile.data);
+       // commit("updatedComment",res.data);
+        // dispatch("saveStateToLocal")
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
     //============= LOCAL STORAGE METHODS ==========
     getStateFromLocal({ commit }) {
       let data = JSON.parse(window.localStorage.getItem("Bloggr"));
@@ -160,4 +170,3 @@ export default new Vuex.Store({
     //==============================================
   },
 });
-

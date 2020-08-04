@@ -3,21 +3,21 @@
     <div class="row justify-content-center bg-gradient-light">
       <div class="col-10 my-1 card text-center border border-rounded shadow-lg">
         <div class="card-body">
-          <h5 class="card-title text-dark">{{activeBlog.blog.title}}</h5>
           <small>
-            <img class="avatar" :src="activeBlog.blog.creator.picture" alt="">
+            <img class="avatar img-fluid" :src="activeBlog.blog.creator.picture" alt="">
           </small>
+          <h5 class="card-title text-dark mt-3">{{activeBlog.blog.title}}</h5>
           <h6
             class="card-subtitle mb-2 text-muted"
             v-if="activeBlog.blog.creator!=null"
           >By: {{activeBlog.blog.creator.name}}</h6>
           <h6 class="card-subtitle mb-2 text-dark">Email: {{activeBlog.blog.creatorEmail}}</h6>
           <p v-if="activeBlog.blog.imgUrl">
-            <img :src="activeBlog.blog.imgUrl" alt />
+            <img v-if="activeBlog.blog.imgUrl!=activeBlog.blog.creator.picture" :src="activeBlog.blog.imgUrl" alt />
           </p>
           <p class="card-text bg-info text-light border-rounded">{{activeBlog.blog.body}}</p>
         </div>
-        <button
+        <button v-if="this.$auth.isAuthenticated"
           type="button"
           class="btn btn-outline-light bg-info"
           data-toggle="modal"
